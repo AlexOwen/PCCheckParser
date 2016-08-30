@@ -9,3 +9,7 @@ electron-packager . "PC Check Parser" --out=dist/win --platform=win32 --arch=x64
 SCSS files also need to be compiled before packaging takes place.
 
 This application is not actively maintained, but changes can be made on request.
+
+# License
+
+This software is made available under the MIT license.
