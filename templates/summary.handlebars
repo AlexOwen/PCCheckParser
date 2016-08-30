@@ -1,0 +1,102 @@
+<div class="summary">
+    <img src="./img/jamies_logo.png" />
+    <table>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Machine Model</td>
+            <td><input oninput="pc.userOptions.manufacturerProduct=this.value" value="{{userOptions.manufacturerProduct}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Serial Number</td>
+            <td><input oninput="pc.pcDetails.system.serial=this.value" value="{{pcDetails.system.serial}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Refurbishment Code</td>
+            <td><input oninput="pc.pcDetails.machineName=this.value" value="{{pcDetails.machineName}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Prepared By</td>
+            <td><input oninput="pc.testMeta.testerName=this.value" value="{{testMeta.testerName}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Date</td>
+            <td><input oninput="pc.userOptions.date=this.value" value="{{userOptions.date}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Warranty</td>
+            <td><input class="last" oninput="userOptions.warranty=this.value" value="{{userOptions.warranty}}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>System Details</strong></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Processor</td>
+            <td><input oninput="pc.pcDetails.processor.type=this.value" value="{{pcDetails.processor.type}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Memory</td>
+            <td><input oninput="pc.pcDetails.memory.installed=this.value" value="{{pcDetails.memory.installed}}" /></td>
+        </tr>
+        {{#each pcDetails.drivesFixedMedia}}
+        <tr>
+            <td><span class="remove_summary_field">-</span>Hard Drive</td>
+            <td><input oninput="pc.pcDetails.drivesFixedMedia[{{@index}}].capacity=this.value" value="{{this.capacity}}" /></td>
+        </tr>
+        {{/each}}
+        {{#each pcDetails.drivesRemovableMedia}}
+        <tr>
+            <td><span class="remove_summary_field">-</span>Removable Drive</td>
+            <td><input oninput="pc.pcDetails.drivesRemovableMedia[{{@index}}]=this.value" value="{{this}}" /></td>
+        </tr>
+        {{/each}}
+        {{#each pcDetails.network}}
+        <tr>
+            <td><span class="remove_summary_field">-</span>Network</td>
+            <td><input oninput="pc.pcDetails.network[{{@index}}]=this.value" value="{{this}}" /></td>
+        </tr>
+        {{/each}}
+        {{#each pcDetails.video}}
+        <tr>
+            <td><span class="remove_summary_field">-</span>Graphics</td>
+            <td><input class="last" oninput="pc.pcDetails.video[{{@index}}]=this.value" value="{{this}}" /></td>
+        </tr>
+        {{/each}}
+        <tr>
+            <td><span class="remove_summary_field">-</span>Operating System</td>
+            <td><input oninput="pc.userOptions.osText=this.value" value="{{userOptions.osText}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Antivirus</td>
+            <td><input oninput="pc.userOptions.antivirus=this.value" value="{{userOptions.antivirus}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Office Software</td>
+            <td><input class="last" oninput="pc.userOptions.office=this.value" value="{{userOptions.office}}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><em>All software is up to date and all drivers are installed, unless otherwise noted.</em></td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Final Checks</strong></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>PAT Test</td>
+            <td><input oninput="pc.userOptions.pat=this.value" value="{{userOptions.pat}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Cleaned</td>
+            <td><input oninput="pc.userOptions.cleaned=this.value" value="{{userOptions.cleaned}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Signed Off By</td>
+            <td><input oninput="pc.userOptions.signoff=this.value" value="{{userOptions.signoff}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Notes</td>
+            <td><textarea class="notes" oninput="pc.userOptions.summaryNotes=this.value" value="{{userOptions.summaryNotes}}" /></td>
+        </tr>
+        <tr>
+            <td><span class="remove_summary_field">-</span>Price</td>
+            <td><input class="last" oninput="pc.userOptions.price=this.value" value="{{userOptions.price}}" /></td>
+        </tr>
+    </table>
+</div>

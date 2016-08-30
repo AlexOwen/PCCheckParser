@@ -1,0 +1,26 @@
+<div class="test_results">
+    <table>
+        <tr>
+            <td colspan="5"><strong>TEST RESULTS ({{pcDetails.machineName}})</strong></td>
+        </tr>
+        {{#each testResults}}
+            <tr>
+                <td colspan="5"><strong>{{this.name}}</strong></td>
+            </tr>
+            {{#each this.tests}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    {{#each this.results}}
+                        <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+        {{/each}}
+        <tr>
+            <td colspan="5"><strong>NOTES</strong></td>
+        </tr>
+        <tr>
+            <td colspan="5"><textarea oninput="pc.userOptions.testNotes=this.value" value="{{userOptions.testNotes}}" /></td>
+        </tr>
+    </table>
+</div>

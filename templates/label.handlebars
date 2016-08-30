@@ -1,0 +1,33 @@
+<div class="label">
+    <span class="remove_label_field" style="line-height:70px">-</span><p><img src="./img/os/{{userOptions.osImage}}.png" class="os_image" /></p>
+    <div class="container">
+        <span class="remove_label_field" style="line-height:20px">-</span><p>
+            <input class="spec_title" oninput="pc.userOptions.manufacturerProduct=this.value" value="{{userOptions.manufacturerProduct}}" />
+        </p>
+        <span class="remove_label_field">-</span><p><span class="spec_label">CPU</span>
+            <input class="spec_detail" oninput="pc.pcDetails.processor.type=this.value" value="{{pcDetails.processor.type}}" />
+        </p>
+        <span class="remove_label_field">-</span><p><span class="spec_label">Memory</span>
+            <input class="spec_detail" oninput="pc.pcDetails.memory.installed=this.value" value="{{pcDetails.memory.installed}}" />
+        </p>
+        {{#each pcDetails.drivesFixedMedia}}
+        <span class="remove_label_field">-</span><p><span class="spec_label">Hard drive</span>
+            <input class="spec_detail" oninput="pc.pcDetails.drivesFixedMedia[{{@index}}].capacity=this.value" value="{{this.capacity}}" />
+        </p>
+        {{/each}} {{#each pcDetails.drivesRemovableMedia}}
+        <span class="remove_label_field">-</span><p><span class="spec_label">Removable Drive</span>
+            <input class="spec_detail" oninput="pc.pcDetails.drivesRemovableMedia[{{@index}}]=this.value" value="{{this}}" />
+        </p>
+        {{/each}}
+        <span class="remove_label_field">-</span><p id="wireless_spec"><span class="spec_label">Wireless</span>
+            <input class="spec_detail" oninput="pc.userOptions.wireless=this.value" value="{{userOptions.wireless}}" />
+        </p>
+        <span class="remove_label_field">-</span><p><span class="spec_label">OS</span>
+            <input class="spec_detail" id="os_text" oninput="pc.userOptions.osText=this.value" value="{{userOptions.osText}}" />
+        </p>
+        <span class="remove_label_field">-</span><p><span class="spec_label">Warranty</span>
+            <input class="spec_detail" id="warranty_text" oninput="pc.userOptions.warranty=this.value" value="{{userOptions.warranty}}" />
+        </p>
+    </div>
+    <input id="price_text" oninput="pc.userOptions.price=this.value" value="{{userOptions.price}}" />
+</div>

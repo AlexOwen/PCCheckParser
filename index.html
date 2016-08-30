@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Label Maker</title>
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/handlebars-v4.0.5.js"></script>
+    <script>
+        if (window.module) module = window.module;
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono|Roboto:400,700" rel="stylesheet" />
+    <link href="./css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Let's make a label.</h1>
+    <div class="form">
+        <div class="part file_part">
+            <input type="file" id="open_file" onchange="setFile(this.files[0])" />
+            <button onclick="make()">Build</button>
+        </div>
+        <div class="part">
+            <label for="os">OS</label>
+            <select id="os">
+                <option value="None">None</option>
+                <option value="Windows 7" selected="selected">Windows 7</option>
+                <option value="Windows 8">Windows 8</option>
+                <option value="Windows 8.1">Windows 8.1</option>
+                <option value="Windows 10">Windows 10</option>
+                <option value="Linux">Linux</option>
+                <option value="macOS">macOS</option>
+                <option value="OS X 10.11">OS X 10.11</option>
+            </select>
+        </div>
+        <div class="part">
+            <label for="warranty">Warranty</label>
+            <select id="warranty">
+                <option value="Sold As Seen">Sold As Seen</option>
+                <option value="3 Months Limited Warranty">3 Months</option>
+                <option value="6 Months Limited Warranty" selected="selected">6 Months</option>
+                <option value="12 Months Limited Warranty">12 Months</option>
+            </select>
+        </div>
+        <div class="part">
+            <label for="wireless">WiFi</label>
+            <select id="wireless">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+        </div>
+        <div class="part">
+            <label for="price_input">Price</label>
+            <span class="price_part">£&nbsp;<input id="price_input" type="text" placeholder="Enter a price"></span>
+        </div>
+        <div class="part print_part">
+            <button onclick="printLabel()">Print</button>
+        </div>
+    </div>
+    <div id="pc_details">
+        <nav><span data-for="shop_label" class="active">Label</span><span data-for="summary">Summary</span><span data-for="test_results">Test Results</span></nav>
+        <div id="shop_label" class="page active"></div>
+        <div id="summary" class="page"></div>
+        <div id="test_results" class="page"></div>
+    </div>
+
+    <script id="test_results_template" type="text/x-handlebars-template">
+        {{#each pcDetails.drivesFixedMedia}} {{/each}}
+    </script>
+
+    <script>
+        var currentFile,
+            pc = {},
+            labelTemplate,
+            testResultsTemplate,
+            summaryTemplate,
+            ipc = require('electron').ipcRenderer,
+
+            make = function() {
+                if (currentFile !== undefined) {
+                    console.log(currentFile);
+                    ipc.send('new_file', currentFile.path);
+                }
+            },
+
+            setFile = function(file) {
+                currentFile = file;
+            },
+
+            printLabel = function() {
+                window.print();
+            },
+
+            updateField = (field, input) => {
+                field = $(input).val();
+            };
+
+        $.ajax({
+            url: 'templates/label.handlebars',
+            cache: true,
+            success: function (source) {
+                var data = [];
+                labelTemplate = Handlebars.compile(source);
+            }
+        });
+
+        $.ajax({
+            url: 'templates/summary.handlebars',
+            cache: true,
+            success: function (source) {
+                var data = [];
+                summaryTemplate = Handlebars.compile(source);
+            }
+        });
+
+        $.ajax({
+            url: 'templates/test_results.handlebars',
+            cache: true,
+            success: function (source) {
+                var data = [];
+                testResultsTemplate = Handlebars.compile(source);
+            }
+        });
+
+        $(() => {
+            var processData = () => {
+                    if (pc.pcDetails !== undefined && pc.pcDetails.drivesFixedMedia !== undefined) {
+                        for (drive in pc.pcDetails.drivesFixedMedia) {
+                            let driveObj = pc.pcDetails.drivesFixedMedia[drive];
+                            pc.pcDetails.drivesFixedMedia[drive] = {
+                                capacity: driveObj.substr(driveObj.indexOf('(') + 1, driveObj.indexOf(')') - driveObj.indexOf('(') - 1),
+                                model: driveObj.substr(0, driveObj.indexOf('(')).trim()
+                            }
+                        }
+                    }
+
+                    if (pc.pcDetails !== undefined && pc.pcDetails.system !== undefined && pc.pcDetails.system.manufacturer !== undefined && pc.pcDetails.system.product !== undefined) {
+                        pc.userOptions.manufacturerProduct = pc.pcDetails.system.manufacturer + ' ' + pc.pcDetails.system.product;
+                    }
+
+                    if (pc.pcDetails !== undefined && pc.pcDetails.machineName !== undefined && pc.pcDetails.machineName[0] !== undefined) {
+                        pc.pcDetails.machineName = pc.pcDetails.machineName[0];
+                    }
+                },
+                render = () => {
+                    $('#shop_label').html(labelTemplate(pc));
+                    $('#summary').html(summaryTemplate(pc));
+                    $('#test_results').html(testResultsTemplate(pc));
+
+                    $('.remove_summary_field').on('click', function() {
+                        $(this).hide();
+                        $(this).parents('tr').hide();
+                    });
+
+                    $('.remove_label_field').on('click', function() {
+                        $(this).hide();
+                        $(this).next('p').hide();
+                    });
+                };
+
+            ipc.on('report', function(event, data) {
+                console.log(data);
+                pc = {};
+                pc.pcDetails = data.pcDetails;
+                pc.testResults = data.testResults;
+                pc.testMeta = data.testMeta;
+                setDefaults();
+                processData();
+                render();
+            });
+
+            ipc.on('error', function(event, data) {
+                alert(data);
+            });
+
+            var updateUserOption = (option, value) => {
+                if (pc.userOptions === undefined) pc.userOptions = {};
+                pc.userOptions[option] = value;
+            };
+
+            $('#os').change(function() {
+                updateUserOption('osText', $(this).val());
+                updateUserOption('osImage', $(this).val().toLowerCase().replace(/\s/g, '').replace(/\./g, ''));
+                render();
+            });
+
+            $('#warranty').change(function() {
+                updateUserOption('warranty', $(this).val());
+                render();
+            });
+
+            $('#wireless').change(function() {
+                updateUserOption('wireless', $(this).val());
+                render();
+            });
+
+            $('#price_input').keyup(function() {
+                updateUserOption('price', '£' + $(this).val());
+                render();
+            });
+
+            var setDefaults = function() {
+                updateUserOption('osText', $('#os').val());
+                updateUserOption('osImage', $('#os').val().toLowerCase().replace(/\s/g, '').replace(/\./g, ''));
+                updateUserOption('warranty', $('#warranty').val());
+                updateUserOption('wireless', $('#wireless').val());
+                updateUserOption('price', '£0.00');
+                updateUserOption('date', getDateFormatted());
+                updateUserOption('pat', 'Yes');
+                updateUserOption('cleaned', 'Yes');
+                updateUserOption('antivirus', 'Avast Free Antivirus');
+                updateUserOption('office', 'OpenOffice Free Office Suite');
+                updateUserOption('signoff', pc.testMeta.testerName);
+                updateUserOption('summaryNotes', 'None');
+                updateUserOption('testNotes', 'None');
+                render();
+            };
+
+            var getDateFormatted = function() {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1;
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+                return dd + '/' + mm + '/' + today.getFullYear();
+            }
+
+            /* Nav */
+
+            $('nav span').on('click', function() {
+                $('nav span').removeClass('active');
+                $(this).addClass('active');
+                $('.page').removeClass('active');
+                $('#' + $(this).attr('data-for')).addClass('active');
+                if (pc.pcDetails !== undefined) render();
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+$text: #AAA;
+$headingText: #229922;
+$lightText: #666;
+$darkBackground: #111;
+$midBackground: #222;
+$lightBackground: #444;
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+
+body,
+html {
+    background: $darkBackground;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background: $midBackground;
+    color: $headingText;
+    margin: 0;
+    padding: 10px 10px 10px 20px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.form {
+    background: $lightBackground;
+    border-right: 1px solid $text;
+    color: $text;
+    display: block;
+    height: calc(100% - 58px);
+    left: 0;
+    margin: auto;
+    padding: 20px;
+    position: fixed;
+    top: 58px;
+    width: 30%;
+
+    .part {
+        display: block;
+        margin: 5px 0;
+    }
+
+    label {
+        border-bottom: 1px solid $text;
+        color: $text;
+        display: block;
+        text-transform: uppercase;
+        width: 100%;
+    }
+
+    input, select, button {
+        background: $lightBackground;
+        border: 1px solid $text;
+        color: $text;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px 0;
+        padding: 5px;
+
+        &:hover {
+            background: #666;
+        }
+    }
+
+    input[type="file"] {
+        width: calc(100% - 55px);
+    }
+
+    button {
+        padding: 6px;
+    }
+
+    select {
+        border: 0;
+        height: 25px;
+        outline: 1px solid $text;
+        width: 100%;
+    }
+
+    input[type="text"] {
+        width: 100%;
+    }
+
+    .price_part {
+        margin-left: -14px;
+    }
+
+    .print_part button,
+    .file_part button {
+        float: right;
+    }
+}
+
+nav {
+    background: $lightBackground;
+    color: $text;
+    height: 30px;
+    position: fixed;
+    width: 70%;
+    z-index: 1000;
+
+    span {
+        border-bottom: 1px solid $text;
+        border-right: 1px solid $text;
+        cursor: pointer;
+        float: left;
+        height: 100%;
+        line-height: 30px;
+        text-align: center;
+        width: 33.33333%;
+
+        &.active {
+            background: #111;
+            border-bottom: none;
+            cursor: default;
+
+            &:hover {
+                background: $darkBackground;
+            }
+        }
+
+        &::hover {
+            background: #666;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+}
+
+#pc_details {
+    background: $darkBackground;
+    height: calc(100% - 58px);
+    left: 30%;
+    overflow: scroll;
+    position: fixed;
+    width: 70%;
+}
+
+.page {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+}
+
+.label {
+    background: #FFF;
+    display: block;
+    height: 148mm;
+    margin: 60px auto;
+    position: relative;
+    width: 105mm;
+
+    p {
+        margin: 2.5% 0;
+    }
+
+    .container {
+        padding: 0 5%;
+        width: 100%;
+
+        input {
+            border: none;
+            display: inline;
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    .remove_label_field {
+        color: $text;
+        cursor: pointer;
+        font-size: 60px;
+        left: -40px;
+        line-height: 40px;
+        position: absolute;
+    }
+
+    img {
+        display: block;
+        margin: auto;
+
+        &.os_image {
+            display: block;
+            padding-bottom: 2.5%;
+            padding-top: 5%;
+            width: 70%;
+        }
+    }
+
+    #price_text {
+        background: $midBackground;
+        bottom: 0;
+        color: #FFF;
+        display: block;
+        font-family: 'Share Tech Mono';
+        font-size: 230%;
+        font-weight: bold;
+        padding: 2.5%;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .spec_title {
+        display: block;
+        font-size: 110%;
+        font-weight: 700;
+        text-align: center;
+        width: 100%;
+    }
+
+    .spec_label {
+        border-bottom: 1px solid $lightText;
+        color: $lightText;
+        display: block;
+        font-size: 80%;
+        font-weight: 700;
+        margin-bottom: 1%;
+        text-transform: uppercase;
+        width: 100%;
+    }
+
+    .spec_detail {
+        display: block;
+        font-size: 100%;
+        text-align: right;
+        width: 100%;
+    }
+}
+
+.summary {
+    background: #FFF;
+    margin: 60px auto;
+    padding: 5% 5%;
+    position: relative;
+    width: 210mm;
+
+    img {
+        display: block;
+        margin: auto;
+        padding: 2.5% 0;
+    }
+
+    table {
+        margin: 0;
+        width: 100%;
+        tr {
+            margin: 0;
+            padding: 0;
+
+            td {
+                padding: 1% 0;
+                width: 30%;
+
+                &:last-child {
+                    width: 70%;
+                }
+            }
+
+            input, textarea {
+                border: 1px solid transparent;
+                font-size: 100%;
+                margin: 0;
+                max-width: 100%;
+                padding: 1%;
+                width: 100%;
+            }
+
+            textarea {
+                resize:vertical;
+            }
+
+            strong {
+                background: $darkBackground;
+                color: #FFF;
+                display: block;
+                margin-top: 1%;
+                padding: 1%;
+                width: 100%;
+            }
+
+            em {
+                color: #333;
+                font-size: 80%;
+            }
+        }
+    }
+
+    div {
+        padding: 1% 0;
+    }
+
+    .remove_summary_field {
+        color: $text;
+        cursor: pointer;
+        font-size: 60px;
+        left: -40px;
+        line-height: 32px;
+        margin-top: -1%;
+        position: absolute;
+    }
+}
+
+.test_results {
+    background: #FFF;
+    margin: 60px auto;
+    padding: 5% 5%;
+    position: relative;
+    width: 210mm;
+
+    table {
+        margin: 0;
+        width: 100%;
+        tr {
+            margin: 0;
+            padding: 0;
+
+            td {
+                padding: 1% 0;
+            }
+
+            textarea {
+                border: 1px solid transparent;
+                font-size: 100%;
+                margin: 0;
+                max-width: 100%;
+                padding: 1%;
+                resize:vertical;
+                width: 100%;
+            }
+
+            strong {
+                background: $darkBackground;
+                color: #FFF;
+                display: block;
+                margin-top: 1%;
+                padding: 1%;
+                width: 100%;
+            }
+        }
+    }
+
+}
+
+@media print {
+    * {
+        -webkit-print-color-adjust: exact;
+    }
+
+    body,
+    html {
+        background: #FFF;
+        height: auto;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .page {
+        display: block;
+        margin: 0;
+        overflow: visible;
+        page-break-after: always;
+        page-break-inside: avoid;
+        width: 100%;
+    }
+
+    #pc_details {
+        background: #FFF;
+        left: 0;
+        overflow: visible;
+        top: 0;
+        position: relative;
+    }
+
+    .form {
+        display: none;
+    }
+
+    h1 {
+        display: none;
+    }
+
+    .label {
+        border: 1px solid #000;
+    }
+
+    .remove_label_field, .remove_summary_field {
+        display: none;
+    }
+}
